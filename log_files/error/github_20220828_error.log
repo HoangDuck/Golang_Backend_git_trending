@@ -1,0 +1,9 @@
+time="2022-08-28T10:25:29.0095194+07:00" level=error msg="Có lỗi xảy ra" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/main.go" line=24
+time="2022-08-28T10:28:35.6296582+07:00" level=error msg="Có lỗi xảy ra" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/main.go" line=30
+time="2022-08-28T10:34:02.0901125+07:00" level=error msg="Có lỗi xảy ra" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/main.go" line=36
+time="2022-08-28T10:34:31.4050604+07:00" level=error msg=">>>>>>>>>>>>.Có lỗi xảy ra" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/main.go" line=36
+time="2022-08-28T10:35:17.337672+07:00" level=error msg="Có lỗi xảy ra" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/main.go" line=34
+time="2022-08-28T10:35:52.074019+07:00" level=error msg="sql: no rows in result set" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/main.go" line=34
+time="2022-08-28T13:50:23.1659265+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/repository/repo_impl/user_repo_impl.go" line=27
+time="2022-08-28T13:59:37.2877563+07:00" level=error msg="pq: duplicate key value violates unique constraint \"users_email_key\"" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/repository/repo_impl/user_repo_impl.go" line=27
+time="2022-08-28T16:49:34.5613777+07:00" level=error msg="key is of invalid type" file="C:/Users/ADMIN/Desktop/Golang/backend_github_trending/handler/user_handler.go" line=127
