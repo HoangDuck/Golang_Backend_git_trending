@@ -1,11 +1,13 @@
 package handler
 
 import (
+	"backend_github_trending/banana"
 	"backend_github_trending/log"
 	"backend_github_trending/model"
 	req2 "backend_github_trending/model/req"
 	"backend_github_trending/repository"
 	"backend_github_trending/security"
+	"github.com/dgrijalva/jwt-go"
 	validator "github.com/go-playground/validator/v10"
 	uuid "github.com/google/uuid"
 	"github.com/labstack/echo"
@@ -16,8 +18,64 @@ type UserHandler struct {
 	UserRepo repository.UserRepo
 }
 
+func (u *UserHandler) UpdateProfile(c echo.Context) error {
+	req := req2.ReqUpdateUser{}
+	if err := c.Bind(&req); err != nil {
+		return err
+	}
+	err := c.Validate(req)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, model.Response{
+			StatusCode: http.StatusBadRequest,
+			Message:    err.Error(),
+		})
+	}
+	token := c.Get("user").(*jwt.Token)
+	claims := token.Claims.(*model.JwtCustomClaims)
+	user := model.User{
+		UserId:   claims.UserId,
+		FullName: req.FullName,
+		Email:    req.Email,
+	}
+	user, err = u.UserRepo.UpdateUser(c.Request().Context(), user)
+	if err != nil {
+		return c.JSON(http.StatusUnprocessableEntity, model.Response{
+			StatusCode: http.StatusUnprocessableEntity,
+			Message:    err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusCreated, model.Response{
+		StatusCode: http.StatusCreated,
+		Message:    "Xử lý thành công",
+		Data:       user,
+	})
+}
+
 func (u *UserHandler) Profile(c echo.Context) error {
-	return nil
+	tokenData := c.Get("user").(*jwt.Token)
+	claims := tokenData.Claims.(*model.JwtCustomClaims)
+	user, err := u.UserRepo.SelectUserById(c.Request().Context(), claims.UserId)
+	if err != nil {
+		if err == banana.UserNotFound {
+			return c.JSON(http.StatusNotFound, model.Response{
+				StatusCode: http.StatusNotFound,
+				Message:    err.Error(),
+				Data:       nil,
+			})
+		}
+
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			StatusCode: http.StatusInternalServerError,
+			Message:    err.Error(),
+			Data:       nil,
+		})
+	}
+	return c.JSON(http.StatusOK, model.Response{
+		StatusCode: http.StatusOK,
+		Message:    "Xử lý thành công",
+		Data:       user,
+	})
 }
 
 func (u *UserHandler) HandleSignUp(c echo.Context) error {
@@ -137,8 +195,8 @@ func (u *UserHandler) HandleSignIn(c echo.Context) error {
 	token, err := security.GenToken(user)
 	if err != nil {
 		log.Error(err.Error())
-		return c.JSON(http.StatusUnauthorized, model.Response{
-			StatusCode: http.StatusUnauthorized,
+		return c.JSON(http.StatusInternalServerError, model.Response{
+			StatusCode: http.StatusInternalServerError,
 			Message:    err.Error(),
 			Data:       nil,
 		})
