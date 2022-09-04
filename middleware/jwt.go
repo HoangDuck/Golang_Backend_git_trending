@@ -3,8 +3,8 @@ package middleware
 import (
 	"backend_github_trending/model"
 	"backend_github_trending/security"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func JWTMiddleware() echo.MiddlewareFunc {

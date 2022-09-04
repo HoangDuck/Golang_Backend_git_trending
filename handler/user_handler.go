@@ -10,7 +10,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	validator "github.com/go-playground/validator/v10"
 	uuid "github.com/google/uuid"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
@@ -18,6 +18,16 @@ type UserHandler struct {
 	UserRepo repository.UserRepo
 }
 
+// UpdateProfile godoc
+// @Summary get user profile
+// @Tags user-service
+// @Accept  json
+// @Produce  json
+// @Param data body req.ReqUpdateUser true "user"
+// @Security jwt
+// @Success 200 {object} model.Response
+// @Failure 500 {object} model.Response
+// @Router /user/profile/update [put]
 func (u *UserHandler) UpdateProfile(c echo.Context) error {
 	req := req2.ReqUpdateUser{}
 	if err := c.Bind(&req); err != nil {
@@ -52,6 +62,15 @@ func (u *UserHandler) UpdateProfile(c echo.Context) error {
 	})
 }
 
+// Profile godoc
+// @Summary get user profile
+// @Tags user-service
+// @Accept  json
+// @Produce  json
+// @Security jwt
+// @Success 200 {object} model.Response
+// @Failure 500 {object} model.Response
+// @Router /user/profile [get]
 func (u *UserHandler) Profile(c echo.Context) error {
 	tokenData := c.Get("user").(*jwt.Token)
 	claims := tokenData.Claims.(*model.JwtCustomClaims)
@@ -78,6 +97,17 @@ func (u *UserHandler) Profile(c echo.Context) error {
 	})
 }
 
+// HandleSignUp SignUp godoc
+// @Summary Create new account
+// @Tags user-service
+// @Accept  json
+// @Produce  json
+// @Param data body req.ReqSignUp true "user"
+// @Success 200 {object} model.Response
+// @Failure 400 {object} model.Response
+// @Failure 404 {object} model.Response
+// @Failure 500 {object} model.Response
+// @Router /user/sign-up [post]
 func (u *UserHandler) HandleSignUp(c echo.Context) error {
 
 	req := req2.ReqSignUp{}
@@ -146,6 +176,16 @@ func (u *UserHandler) HandleSignUp(c echo.Context) error {
 	})
 }
 
+// HandleSignIn SignIn godoc
+// @Summary Sign in to access your account
+// @Tags user-service
+// @Accept  json
+// @Produce  json
+// @Param data body req.ReqSignIn true "user"
+// @Success 200 {object} model.Response
+// @Failure 400 {object} model.Response
+// @Failure 500 {object} model.Response
+// @Router /user/sign-in [post]
 func (u *UserHandler) HandleSignIn(c echo.Context) error {
 	req := req2.ReqSignIn{}
 	if err := c.Bind(&req); err != nil {
